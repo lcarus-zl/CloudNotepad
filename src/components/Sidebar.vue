@@ -27,7 +27,7 @@
 </script>
 
 
-<style scoped>
+<style lang="less" scoped>
 #sidebar {
   position: relative;
   width: 56px;
@@ -36,11 +36,13 @@
 }
 .icons {
   margin-top: 15px;
+
+  a {
+    padding: 6px 0;
+    display: block;
+  }
 }
-.icons a {
-  padding: 6px 0;
-  display: block;
-}
+
 .icons .router-link-active {
   background-color: #5e6266;
 }
