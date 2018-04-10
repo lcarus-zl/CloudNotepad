@@ -34,12 +34,17 @@
 
 <script>
 
-  import request from '@/helpers/request'
+  import Auth from '@/apis/auth'
 
-  request('/auth')
-   .then(data=>{
-     console.log(data)
+  Auth.getInfo()
+    .then(data => {
+      console.log(data)
     })
+
+  // request('/auth')
+  //  .then(data=>{
+  //    console.log(data)
+  //   })
 
 
   export default {
@@ -84,12 +89,11 @@
         this.register.isError = false
         this.register.notice = ''
         console.log(`start register..., username: ${this.register.username} , password: ${this.register.password}`)
-        request('/auth/register', 'POST', 
-          {
+        Auth.register({
             username: this.register.username, 
             password: this.register.password
-          }).then(data=>{
-           console.log(data)
+          }).then(data => {
+            console.log(data)
           })
       },
       onLogin(){
@@ -107,14 +111,12 @@
         this.login.notice = ''
         
         console.log(`start login..., username: ${this.login.username} , password: ${this.login.password}`)
-        request('/auth/login', 'POST', 
-          {
+        Auth.login({
             username: this.login.username, 
             password: this.login.password
-          }).then(data=>{
-           console.log(data)
+          }).then(data => {
+            console.log(data)
           })
-
       }
     }
   }
