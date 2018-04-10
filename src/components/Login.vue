@@ -83,11 +83,14 @@
         }
         this.register.isError = false
         this.register.notice = ''
-        request('/auth/register', 'POST', {username: this.register.username, password: this.register.password})
-         .then(data=>{
+        console.log(`start register..., username: ${this.register.username} , password: ${this.register.password}`)
+        request('/auth/register', 'POST', 
+          {
+            username: this.register.username, 
+            password: this.register.password
+          }).then(data=>{
            console.log(data)
           })
-        // console.log(`start register..., username: ${this.register.username} , password: ${this.register.password}`)
       },
       onLogin(){
         if(!/^[\w\u4e00-\u9fa5]{3,15}$/.test(this.login.username)){
@@ -102,11 +105,16 @@
         }
         this.login.isError = false
         this.login.notice = ''
-        console.log(`start login..., username: ${this.login.username} , password: ${this.login.password}`)      
-        request('/auth/register', 'POST', {username: this.login.username, password: this.login.password})
-         .then(data=>{
+        
+        console.log(`start login..., username: ${this.login.username} , password: ${this.login.password}`)
+        request('/auth/login', 'POST', 
+          {
+            username: this.login.username, 
+            password: this.login.password
+          }).then(data=>{
            console.log(data)
           })
+
       }
     }
   }
