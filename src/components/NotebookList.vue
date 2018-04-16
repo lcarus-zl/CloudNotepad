@@ -1,26 +1,21 @@
 <template>
   <div class="detail" id="notebook-list">
     <header>
-      <a href="#" class="btn"><i class="iconfont icon-plus"></i> 新建笔记本</a>
+      <a href="#" class="btn" @click.prevent="onCreate"><i class="iconfont icon-plus"></i> 新建笔记本</a>
     </header>
     <main>
       <div class="layout">
-        <h3>笔记本列表(10)</h3>
+        <h3>笔记本列表({{notebooks.length}})</h3>
         <div class="book-list">
-          <a href="#" class="notebook">
+          <router-link v-for="notebook in notebooks" to="/note/1" class="notebook">
             <div>
-              <span class="iconfont icon-notebook"></span> 笔记本标题1 <span>3</span><span class="action" >编辑</span>  
-              <span class="action" >删除</span>  
-              <span class="date">3天前</span>              
+              <span class="iconfont icon-notebook"></span> {{notebook.title}} 
+              <span>{{notebook.noteCounts}}</span>
+              <span class="action" @click.stop.prevent="onEdit(notebook)">编辑</span>  
+              <span class="action" @click.stop.prevent="onDelete(notebook)">删除</span>  
+              <span class="date">{{notebook.friendlyCreatedAt}}</span>              
             </div>
-          </a>            
-          <a href="#" class="notebook">
-            <div>
-              <span class="iconfont icon-notebook"></span> 笔记本标题2 <span>1</span><span class="action" >编辑</span>  
-              <span class="action" >删除</span>  
-              <span class="date">5天前</span>              
-            </div>
-          </a>    
+          </router-link>              
         </div>       
       </div>
 
@@ -31,23 +26,70 @@
 <script>
 import Auth from '@/apis/auth'
 import Notebooks from '@/apis/notebooks'
+import { friendlyDate } from '@/helpers/util'
 
 //window.Notebooks = Notebooks
 
 export default {
-  name: 'Login',
   data () {
     return {
-      msg: '笔记本列表'
+      notebooks: []
     }
   },
+
   created() {
     Auth.getInfo()
-      .then(res=>{
+      .then(res => {
         if(!res.isLogin) {
           this.$router.push({path: '/login'})
         }
       })
+
+    Notebooks.getAll()
+      .then(res => {
+        this.notebooks = res.data
+      })
+  },
+
+  methods: {
+    onCreate() {
+      let title = window.prompt('创建笔记本')
+      if(title.trim() === '') {
+        alert('笔记本名不能为空')
+        return
+      }
+      Notebooks.addNotebook({ title })
+        .then(res => {
+          console.log(res)
+          res.data.friendlyCreatedAt = friendlyDate(res.data.createdAt)
+          this.notebooks.unshift(res.data)
+          alert(res.msg)
+        })
+    },
+
+    onEdit(notebook) {
+      console.log('edit...', notebook)
+      let title = window.prompt('修改标题', notebook.title)
+      Notebooks.updateNotebook(notebook.id, { title })
+        .then(res => {
+          console.log(res)
+          notebook.title = title
+          alert(res.msg)
+        })
+    },
+
+    onDelete(notebook) {
+      console.log('delete', notebook)
+      let isConfirm = window.confirm('你确定要删除吗?')
+      if(isConfirm) {
+        Notebooks.deleteNotebook(notebook.id)
+          .then(res => {
+            console.log(res)
+            this.notebooks.splice(this.notebooks.indexOf(notebook), 1)
+            alert(res.msg)
+          })
+      }
+    }
   }
 }
 </script>
