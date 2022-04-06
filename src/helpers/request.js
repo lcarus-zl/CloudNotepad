@@ -2,7 +2,9 @@ import axios from 'axios'
 import baseURLConfig from './config-baseURL'
 import {Message} from 'element-ui'
 
+// baseURLTest = baseURLConfig.replace('http:','https:') || baseURLConfig
 console.log(baseURLConfig)
+// console.log('test',baseURLTest)
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.defaults.baseURL = baseURLConfig.baseURL

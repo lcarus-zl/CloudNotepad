@@ -12,7 +12,7 @@ Bus.$on('test', msg => {
 })
 
 
-Bus.$emit('test', 'hello jirengu')
+Bus.$emit('test', 'hello ')
 
 
 */
