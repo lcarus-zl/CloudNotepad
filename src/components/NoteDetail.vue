@@ -28,7 +28,7 @@
         </div>
         <div class="editor">
           <textarea
-            v-show="isShowPreview"
+            v-show="!isShowPreview"
             v-model:value="curNote.content"
             @input="onUpdateNote"
             @keydown="statusText = '正在输入...'"
@@ -37,7 +37,7 @@
           <div
             class="preview markdown-body"
             v-html="previewContent"
-            v-show="!isShowPreview"
+            v-show="isShowPreview"
           ></div>
         </div>
       </div>
