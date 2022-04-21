@@ -36,8 +36,8 @@
           ></textarea>
           <div
             class="preview markdown-body"
-            v-html="previewContent"
             v-show="isShowPreview"
+            v-html="previewContent"
           ></div>
         </div>
       </div>
